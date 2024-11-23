@@ -91,6 +91,10 @@ public class Program
     static void Login()
     {
         LoadUserInfo();
+        Console.Write("Enter username: ");
+        string username = Console.ReadLine()!;
+        Console.Write("Enter password: ");
+        string password = Console.ReadLine()!;
     }
 
     static void Register()
