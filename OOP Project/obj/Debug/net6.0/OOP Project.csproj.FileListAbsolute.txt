@@ -12,3 +12,17 @@ C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey\OOP Project\OOP Projec
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.pdb
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.genruntimeconfig.cache
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey\OOP Project\OOP Project\obj\Debug\net6.0\ref\OOP Project.dll
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\bin\Debug\net6.0\OOP Project.exe
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\bin\Debug\net6.0\OOP Project.deps.json
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\bin\Debug\net6.0\OOP Project.runtimeconfig.json
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\bin\Debug\net6.0\OOP Project.dll
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\bin\Debug\net6.0\OOP Project.pdb
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.GeneratedMSBuildEditorConfig.editorconfig
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.AssemblyInfoInputs.cache
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.AssemblyInfo.cs
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.csproj.CoreCompileInputs.cache
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.dll
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\refint\OOP Project.dll
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.pdb
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.genruntimeconfig.cache
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\ref\OOP Project.dll

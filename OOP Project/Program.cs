@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata;
+using System.Text;
 
 public class User 
 {
@@ -33,6 +34,54 @@ public class Program
 {
 
      static List<User> users = new List<User>();
+
+
+    static void LoadUserInfo()
+    {
+        if (File.Exists("user_data.txt"))
+        {
+            string[] lines = File.ReadAllLines("user_data.txt");
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(':');
+                if (parts.Length == 2)
+                {
+                    users.Add(new Registered_User(parts[0], parts[1]));
+                }
+            }
+        }
+    }
+
+
+   public static string ReadPassword()
+    {
+        StringBuilder password = new StringBuilder();
+        ConsoleKeyInfo keyInfo;
+
+        do
+        {
+            keyInfo = Console.ReadKey(intercept: true);
+            if(keyInfo.Key != ConsoleKey.Backspace && keyInfo.Key != ConsoleKey.Enter)
+            {
+                password.Append(keyInfo.KeyChar);
+                Console.Write("*");
+            }
+            else if (keyInfo.Key == ConsoleKey.Backspace && password.Length > 0)
+            {
+                password.Remove(password.Length - 1, 1);
+                Console.Write("\b \b");
+            }
+        }while (keyInfo.Key != ConsoleKey.Enter);
+        return password.ToString();
+    }
+
+
+    static void SaveUserInfo(User user)
+    {
+        File.AppendAllText("user_data.txt", $"{user.Username}:{user.Password}\n");
+    }
+
 
     public static void Main(string[] args)
     {
@@ -94,7 +143,23 @@ public class Program
         Console.Write("Enter username: ");
         string username = Console.ReadLine()!;
         Console.Write("Enter password: ");
-        string password = Console.ReadLine()!;
+        string password = ReadPassword()!;
+
+        User user = users.FirstOrDefault(u => u.Username == username && u.Password == password)!;
+
+        if (user != null)
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome To AmorCart!");
+            Console.ReadKey();
+            MainMenu();
+        }
+        else 
+        {
+           Console.Clear();
+           Console.WriteLine("Invalid Username or Password. Please Try Again");
+           Console.ReadKey();
+        }
     }
 
     static void Register()
@@ -104,19 +169,16 @@ public class Program
         Console.WriteLine("Enter Username: ");
         string u_name = Console.ReadLine()!;
         Console.WriteLine("Create Password: ");
-        string u_pass= Console.ReadLine()!;
+        string u_pass= ReadPassword()!;
         Console.WriteLine("Confirm Password: ");
-        string con_pass= Console.ReadLine()!;
+        string con_pass= ReadPassword()!;
 
 
         if (users.Any(u=>u.Username == u_name)) //scans through the List if the same username exist
         {
             Console.Clear();
             Console.WriteLine("Username already exists. Please try again.");
-            if (con_pass != u_pass)
-            {
-                Console.WriteLine("Password do not match. Please try again");
-            }
+           
         }
         else
         {
@@ -127,25 +189,8 @@ public class Program
         }
     }
 
-    static void SaveUserInfo(User user)
+    static void MainMenu()
     {
-       File.AppendAllText("user_data.txt",$"{user.Username}:{user.Password}\n");
-    }
 
-    static void LoadUserInfo()
-    {
-        if (File.Exists("user_data.txt"))
-        {
-            string[] lines = File.ReadAllLines("user_data.txt");
-
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(':');
-                if (parts.Length == 2)
-                {
-                    users.Add(new Registered_User(parts[0], parts[1]));
-                }
-            }
-        }
     }
 }
