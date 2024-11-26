@@ -28,7 +28,24 @@ public class Registered_User : User
 
 
 
+public class Product
+{
+    public string productName { get; set; }
+    public decimal price { get; set; }
+    public string category { get; set; }
 
+    public Product(string p_Name, decimal Price, string Category)
+    {
+        productName = p_Name;
+        price = Price;
+        category = Category;
+    }
+
+    public void Display()
+    {
+        Console.WriteLine($"Product:{productName}, Price:{price}, Category:{category}");
+    }
+}
 
 public class Program
 {
