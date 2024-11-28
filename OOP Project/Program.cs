@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Net.Http.Headers;
 
 public class User 
 {
@@ -51,7 +52,7 @@ public class Program
 {
 
      static List<User> users = new List<User>();
-
+     static List<Product> products = new List<Product>();
 
     static void LoadUserInfo()
     {
@@ -206,8 +207,105 @@ public class Program
         }
     }
 
+    static void Pause()
+    {
+        Console.WriteLine("Press Enter to Continue. . . .");
+        Console.ReadKey();
+    }
+
+    public static void ViewProduct(List<Product>products)
+    {
+        Console.Clear();
+        Console.WriteLine("Available Products");
+        foreach (var product in products)
+        {
+            product.Display();
+        }
+        Pause();
+    }
+
+    public static void AddProduct()
+    {
+        Console.WriteLine("Add Your Product!");
+        Console.WriteLine("Enter Product: ");
+        string product_name = Console.ReadLine()!;
+        Console.WriteLine("Enter Product Price: ");
+        long product_price = int .Parse(Console.ReadLine()!);
+        Console.WriteLine("Enter Product Category: ");
+        string product_category = Console.ReadLine()!;
+
+        Product products1 = new Product(product_name, product_price, product_category);
+        products.Add(products1);
+        SaveProductData(products1);
+        Console.WriteLine("PRODUCT ADDED SUCCESSFULLY");
+    }
+
+
+    public static void SaveProductData(Product product)
+    {
+        File.AppendAllText("Product.csv", $"{product.productName}, {product.price}, {product.category}");
+    }
+
+    public static void LoadProductData()
+    {
+        if (File.Exists("Product.csv"))
+        {
+            string[] lines = File.ReadAllLines("Product.csv");
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(':');
+                if (parts.Length == 2)
+                {
+                    int price = int.Parse(parts[1]);
+                    products.Add(new Product(parts[0], price, parts[2] ));
+                }
+            }
+        }
+    }
+
+
     static void MainMenu()
     {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("AMORCART");
+            Console.WriteLine("1. View Products");
+            Console.WriteLine("2. Add Products to Cart");
+            Console.WriteLine("3. View Cart");
+            Console.WriteLine("4. Checkout");
+            Console.WriteLine("5. Add Product");
+            Console.WriteLine("6. Exit");
+            Console.WriteLine("Enter you choice: ");
+            int choice = int.Parse(Console.ReadLine()!);
 
+           switch(choice)
+            {
+                case 1:
+                    //View Product
+                    ViewProduct(products);
+                    break;
+                case 2:
+                    //Add Product to cart
+                    break;
+                case 3:
+                    //View Cart
+                    break;
+                case 4:
+                    //Checkout
+                    break;
+                case 5:
+                    //Add Product
+                    AddProduct();
+                    break;
+                case 6:
+                    //Exit
+                    Environment.Exit(0);
+                    break;
+                default:
+                    Console.WriteLine("Invalid Choice. Try Again!");
+                    break;
+            }
+        }
     }
 }
