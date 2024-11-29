@@ -7,6 +7,7 @@ using System.ComponentModel.Design;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 
 public class User 
 {
@@ -14,11 +15,15 @@ public class User
 
     public string Password { get; set; }
 
+
+
     public User(string username, string password)
     {
         Username = username;
         Password = password;
     }
+
+
 
 }
 
@@ -45,6 +50,49 @@ public class Product
     public void Display()
     {
         Console.WriteLine($"Product:{productName}, Price:{price}, Category:{category}");
+    }
+
+    
+     
+    public class ShoppingCart
+    {
+        private Dictionary <string, (Product product, int Quantity)> items = new Dictionary<string, (Product product, int Quantity)> ();
+
+        public void AddProduct (Product product, int quantity)
+        {
+            if (items.ContainsKey(product.productName))
+            {
+                items[product.productName] = (product, items[product.productName].Quantity + quantity);
+            }
+            else
+            {
+                items.Add(product.productName, (product, quantity));
+            }
+        }
+
+        public decimal CalculateTotal()
+        {
+            decimal total = 0;
+            foreach(var item in items.Values)
+            {
+                total += item.product.price * item.Quantity;
+            }
+            return total;
+        }
+
+        public void DisplayCart()
+        {
+            foreach(var item in items.Values)
+            {
+                Console.WriteLine($"{item.product.productName} - {item.Quantity} x {item.product.price} = {item.Quantity * item.product.price} ");
+            }
+            Console.WriteLine($"Total{CalculateTotal()}");
+        }
+        
+    }
+    public class AddProduct
+    {
+
     }
 }
 
@@ -263,6 +311,10 @@ public class Program
         }
     }
 
+    public static void AddProductsToCart()
+    {
+
+    }
 
     static void MainMenu()
     {
@@ -287,6 +339,7 @@ public class Program
                     break;
                 case 2:
                     //Add Product to cart
+                    AddProductsToCart();
                     break;
                 case 3:
                     //View Cart
