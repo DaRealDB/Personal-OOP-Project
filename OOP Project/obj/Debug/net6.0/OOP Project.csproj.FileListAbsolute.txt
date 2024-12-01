@@ -26,3 +26,4 @@ C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Proje
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.pdb
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.genruntimeconfig.cache
 C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\ref\OOP Project.dll
+C:\Visual Studio 2022\Projects\REFRESHER(.Net Dev journey)\OOP Project\OOP Project\obj\Debug\net6.0\OOP Project.sourcelink.json
