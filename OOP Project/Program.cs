@@ -15,21 +15,19 @@ public class User
 
     public string Password { get; set; }
 
+    public string Email { get; set; }
 
-
-    public User(string username, string password)
+    public User(string username, string password, string email)
     {
         Username = username;
         Password = password;
+        Email = email;
     }
-
-
-
 }
 
 public class Registered_User : User
 {
-    public Registered_User(string username, string password) : base(username, password) { }
+    public Registered_User(string username, string password, string email) : base(username, password, email) { }
 }
 
 
@@ -52,50 +50,66 @@ public class Product
         Console.WriteLine($"Product:{productName}, Price:{price}, Category:{category}");
     }
 
-    
-     
-    public class ShoppingCart
+}
+
+public class Customer : User
+{
+    public string Name { get; set; }
+    public ShoppingCart Cart { get; set; }
+
+    public Customer(string username, string password, string email, string name) : base(username, password,email)
     {
-        private Dictionary <string, (Product product, int Quantity)> items = new Dictionary<string, (Product product, int Quantity)> ();
-
-        public void AddProduct (Product product, int quantity)
-        {
-            if (items.ContainsKey(product.productName))
-            {
-                items[product.productName] = (product, items[product.productName].Quantity + quantity);
-            }
-            else
-            {
-                items.Add(product.productName, (product, quantity));
-            }
-        }
-
-        public decimal CalculateTotal()
-        {
-            decimal total = 0;
-            foreach(var item in items.Values)
-            {
-                total += item.product.price * item.Quantity;
-            }
-            return total;
-        }
-
-        public void DisplayCart()
-        {
-            foreach(var item in items.Values)
-            {
-                Console.WriteLine($"{item.product.productName} - {item.Quantity} x {item.product.price} = {item.Quantity * item.product.price} ");
-            }
-            Console.WriteLine($"Total{CalculateTotal()}");
-        }
-        
+        Name = name;
+        Cart = new ShoppingCart();
     }
-    public class AddProduct
-    {
 
+    public void AddtoCart(Product product, int quantity)
+    {
+        Cart.AddProduct(product, quantity);
+    }
+
+    public void ViewCart()
+    {
+        Cart.DisplayCart();
     }
 }
 
+public class ShoppingCart
+{
+    private Dictionary<string, (Product product, int Quantity)> items = new Dictionary<string, (Product product, int Quantity)>();
+
+    public void AddProduct(Product product, int quantity)
+    {
+        if (items.ContainsKey(product.productName))
+        {
+            items[product.productName] = (product, items[product.productName].Quantity + quantity);
+        }
+        else
+        {
+            items.Add(product.productName, (product, quantity));
+        }
+    }
+
+    public decimal CalculateTotal()
+    {
+        decimal total = 0;
+        foreach (var item in items.Values)
+        {
+            total += item.product.price * item.Quantity;
+        }
+        return total;
+    }
+
+    public void DisplayCart()
+    {
+        foreach (var item in items.Values)
+        {
+            Console.WriteLine($"{item.product.productName} - {item.Quantity} x {item.product.price} = {item.Quantity * item.product.price} ");
+        }
+        Console.WriteLine($"Total{CalculateTotal()}");
+    }
+
+}
 public class Program
 {
 
@@ -111,16 +125,17 @@ public class Program
             foreach (string line in lines)
             {
                 string[] parts = line.Split(':');
-                if (parts.Length == 2)
+                if (parts.Length == 4) // Ensure there are four parts: username, password, name, email
                 {
-                    users.Add(new Registered_User(parts[0], parts[1]));
+                    users.Add(new Customer(parts[0], parts[1], parts[2], parts[3]));
                 }
             }
         }
     }
 
 
-   public static string ReadPassword()
+
+    public static string ReadPassword()
     {
         StringBuilder password = new StringBuilder();
         ConsoleKeyInfo keyInfo;
@@ -143,10 +158,12 @@ public class Program
     }
 
 
-    static void SaveUserInfo(User user)
+    static void SaveUserInfo(Customer customer)
     {
-        File.AppendAllText("user_data.txt", $"{user.Username}:{user.Password}\n");
+        string userData = $"{customer.Username}:{customer.Password}:{customer.Name}:{customer.Email}";
+        File.AppendAllLines("user_data.txt", new[] { userData });
     }
+
 
 
     public static void Main(string[] args)
@@ -206,27 +223,30 @@ public class Program
     static void Login()
     {
         LoadUserInfo();
+
         Console.Write("Enter username: ");
         string username = Console.ReadLine()!;
         Console.Write("Enter password: ");
         string password = ReadPassword()!;
 
-        User user = users.FirstOrDefault(u => u.Username == username && u.Password == password)!;
+        // Assuming the `users` list contains `Customer` objects
+        Customer customer = (Customer)users.FirstOrDefault(u => u.Username == username && u.Password == password)!;
 
-        if (user != null)
+        if (customer != null)
         {
             Console.Clear();
             Console.WriteLine("Welcome To AmorCart!");
             Console.ReadKey();
-            MainMenu();
+            MainMenu(customer);
         }
-        else 
+        else
         {
-           Console.Clear();
-           Console.WriteLine("Invalid Username or Password. Please Try Again");
-           Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("Invalid Username or Password. Please Try Again");
+            Console.ReadKey();
         }
     }
+
 
     static void Register()
     {
@@ -235,25 +255,28 @@ public class Program
         Console.WriteLine("Enter Username: ");
         string u_name = Console.ReadLine()!;
         Console.WriteLine("Create Password: ");
-        string u_pass= ReadPassword()!;
-        Console.WriteLine("Confirm Password: ");
-        string con_pass= ReadPassword()!;
+        string u_pass = ReadPassword()!;
+        Console.WriteLine("Enter Email: ");
+        string email = Console.ReadLine()!;
+        Console.WriteLine("Enter Name: ");
+        string name = Console.ReadLine()!;
 
-
-        if (users.Any(u=>u.Username == u_name)) //scans through the List if the same username exist
+        if (users.Any(u => u.Username == u_name)) // Scans through the list if the same username exists
         {
             Console.Clear();
             Console.WriteLine("Username already exists. Please try again.");
-           
         }
         else
         {
-            Registered_User newUser = new Registered_User(u_name, u_pass);
-            users.Add(newUser);
-            SaveUserInfo(newUser);
+            // Here we create a new Customer object and add it to the users list
+            Customer newCustomer = new Customer(u_name, u_pass, name, email);
+            users.Add(newCustomer);
+            SaveUserInfo(newCustomer);
             Console.WriteLine("ACCOUNT SUCCESSFULLY REGISTERED!");
         }
     }
+
+
 
     static void Pause()
     {
@@ -313,10 +336,17 @@ public class Program
 
     public static void AddProductsToCart()
     {
+        Console.WriteLine("SELECT PRODUCT TO ADD!: ");
+        string products2 = Console.ReadLine()!;
+        Console.WriteLine("Quantity: ");
+        int price = int .Parse(Console.ReadLine() !);
+
+        
+
 
     }
 
-    static void MainMenu()
+    static void MainMenu(Customer customer)
     {
         while (true)
         {
@@ -331,6 +361,7 @@ public class Program
             Console.WriteLine("Enter you choice: ");
             int choice = int.Parse(Console.ReadLine()!);
 
+          
            switch(choice)
             {
                 case 1:
@@ -343,9 +374,11 @@ public class Program
                     break;
                 case 3:
                     //View Cart
+                    customer.ViewCart();
                     break;
                 case 4:
                     //Checkout
+
                     break;
                 case 5:
                     //Add Product
